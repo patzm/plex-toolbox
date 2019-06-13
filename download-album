@@ -39,7 +39,7 @@ def main(_):
             continue
 
         utils.download(url, account._token, filename,
-                       savepath=output_path,
+                       savepath=output_dir,
                        session=photo._server._session)
 
 

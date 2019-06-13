@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+
+from absl import app, flags, logging
+import getpass
+import os
+from pathvalidate import sanitize_filepath
+from plexapi import utils
+from plexapi.myplex import MyPlexAccount
+from tqdm import tqdm
+
+FLAGS = flags.FLAGS
+
+
+def main(_):
+    password = getpass.getpass('Password: ')
+    logging.info('Connecting to %s@%s', FLAGS.username, FLAGS.server)
+    account = MyPlexAccount(FLAGS.username, password)
+    plex = account.resource(FLAGS.server).connect()
+
+    # if no playlists/albums will select the first and only
+    playlists = [pl for pl in plex.playlists() if pl.isPhoto]
+    playlist = utils.choose('\nChoose Playlist', playlists, lambda pl: '%s' % pl.title)
+
+    if FLAGS.output_dir is None:
+        output_dir = os.getcwd()
+    else:
+        output_dir = os.path.expanduser(FLAGS.output_dir)
+    output_dir = os.path.join(output_dir, sanitize_filepath(playlist.title))
+    logging.info('Saving images in %s', output_dir)
+
+    for photo in tqdm(playlist.items(), desc='Downloading images', unit='img'):
+        photo_media_part = photo.media[0].parts[0]
+        filename = os.path.basename(photo_media_part.file)
+        logging.debug('Downloading %s ...', filename)
+        url = plex.url('%s?download=1' % photo_media_part.key)
+        output_path = os.path.join(output_dir, filename)
+        if os.path.exists(output_path):
+            logging.debug('%s already exists, skipping ...', output_path)
+            continue
+
+        utils.download(url, account._token, filename,
+                       savepath=output_path,
+                       session=photo._server._session)
+
+
+if __name__ == '__main__':
+    flags.DEFINE_string('server',
+                        default=None,
+                        help='The Plex server name')
+    flags.DEFINE_string('username',
+                        default=None,
+                        help='The Plex username / email')
+    flags.DEFINE_string('output_dir',
+                        default=None,
+                        help='Path to store the album in. Defaults to the album name in the current working directory.')
+    flags.mark_flags_as_required(['server', 'username'])
+    app.run(main)

@@ -7,6 +7,10 @@ You can not use the latest version of `pip` though.
 ```bash
 pip install git+https://github.com/patzm/plex-scripts#egg=plex-scripts
 ```
+If this is done inside a `virtualenv`, all scripts have been installed to the `PATH`.
+They can then directly be used from the command line.
+Otherwise, make sure that the `bin` folder of the used `pip` distribution is in the `PATH`.
+For instance, installing with `pip install --user ...` will usually install into `~/.local/bin`.
 
 ## Scripts
 * `download-album`

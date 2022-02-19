@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import argparse
-import getpass
 import logging
 import os
 from pathvalidate import sanitize_filepath
@@ -14,12 +13,8 @@ from plex_toolbox import cli
 
 
 def main(config):
-    if not config.password:
-        password = getpass.getpass("Password: ")
-    else:
-        password = config.password
-    logging.info(f"Connecting to {config.username}@{config.server}")
-    account = MyPlexAccount(config.username, password)
+    password = cli.maybe_query_password(config=config)
+    account = MyPlexAccount(username=config.username, password=password)
     plex = account.resource(config.server).connect()
 
     # if no playlists/albums will select the first and only

@@ -1,4 +1,5 @@
 import argparse
+import getpass
 
 
 def add_server_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
@@ -13,3 +14,10 @@ def add_server_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         help="The Plex password. Warning: passing your password literally is security risk.",
     )
     return parser
+
+
+def maybe_query_password(config: argparse.Namespace) -> str:
+    if not config.password:
+        return getpass.getpass("Password: ")
+    else:
+        return config.password

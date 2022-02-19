@@ -1,5 +1,5 @@
 
 format:
-	black plex-toolbox $(wildcard scripts/*)
+	black plex_toolbox $(wildcard scripts/*)
 
 .PHONY: format

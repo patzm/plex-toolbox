@@ -13,7 +13,7 @@ FLAGS = flags.FLAGS
 
 def main(_):
     password = getpass.getpass("Password: ")
-    logging.info("Connecting to %s@%s", FLAGS.username, FLAGS.server)
+    logging.info(f"Connecting to {FLAGS.username}@{FLAGS.server}")
     account = MyPlexAccount(FLAGS.username, password)
     plex = account.resource(FLAGS.server).connect()
 
@@ -26,16 +26,16 @@ def main(_):
     else:
         output_dir = os.path.expanduser(FLAGS.output_dir)
     output_dir = os.path.join(output_dir, sanitize_filepath(playlist.title))
-    logging.info("Saving images in %s", output_dir)
+    logging.info(f"Saving images in {output_dir}")
 
     for photo in tqdm(playlist.items(), desc="Downloading images", unit="img"):
         photo_media_part = photo.media[0].parts[0]
         filename = os.path.basename(photo_media_part.file)
-        logging.debug("Downloading %s ...", filename)
-        url = plex.url("%s?download=1" % photo_media_part.key)
+        logging.debug(f"Downloading {filename} ...")
+        url = plex.url(f"{photo_media_part.key}?download=1")
         output_path = os.path.join(output_dir, filename)
         if os.path.exists(output_path):
-            logging.debug("%s already exists, skipping ...", output_path)
+            logging.debug(f"{output_path} already exists, skipping ...")
             continue
 
         utils.download(

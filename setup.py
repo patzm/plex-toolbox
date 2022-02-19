@@ -1,9 +1,9 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 setup(
     name="plex-toolbox",
     version="0.1",
-    packages=[],
+    packages=find_packages(),
     scripts=["scripts/download-album"],
     install_requires=["pathvalidate", "plexapi", "tqdm"],
     author="Martin Patz",

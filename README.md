@@ -18,12 +18,15 @@ For instance, installing with `pip install --user ...` will usually install into
 ### `download-album`
 
 ```text
-USAGE: download-album [flags]
+usage: download-album [-h] --server SERVER --username USERNAME [-o OUTPUT_DIR]
 
-flags:
-  --output_dir: Path to store the album in. Defaults to the album name in the current working directory.
-  --server: The Plex server name
-  --username: The Plex username / email
+optional arguments:
+  -h, --help            show this help message and exit
+  --server SERVER       The Plex server name
+  --username USERNAME   The Plex username / email
+  -o OUTPUT_DIR, --output-dir OUTPUT_DIR
+                        Path to store the album in. Defaults to the album name
+                        in the current working directory.
 ```
 
 

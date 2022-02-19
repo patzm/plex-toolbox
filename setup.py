@@ -4,7 +4,7 @@ setup(
     name="plex-toolbox",
     version="0.1",
     packages=[],
-    scripts=['download-album'],
+    scripts=['scripts/download-album'],
     install_requires=['absl-py', 'pathvalidate', 'plexapi', 'tqdm'],
     author="Martin Patz",
     author_email="mailto@martin-patz.de",

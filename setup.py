@@ -5,7 +5,7 @@ setup(
     version="0.1",
     packages=[],
     scripts=["scripts/download-album"],
-    install_requires=["absl-py", "pathvalidate", "plexapi", "tqdm"],
+    install_requires=["pathvalidate", "plexapi", "tqdm"],
     author="Martin Patz",
     author_email="mailto@martin-patz.de",
     description="A loose collection of scripts to interact with "

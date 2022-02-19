@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="plex-scripts",
+    name="plex-toolbox",
     version="0.1",
     packages=[],
     scripts=['download-album'],

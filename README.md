@@ -5,8 +5,9 @@ A loose collection of command line scripts to interact with a Plex Media Server 
 The easiest way to install this collection of scripts is with `pip`.
 You can not use the latest version of `pip` though.
 ```bash
-pip install git+https://github.com/patzm/plex-toolbox#egg=plex-toolbox
+pip install git+https://github.com/patzm/plex-toolbox
 ```
+
 If this is done inside a `virtualenv`, all scripts have been installed to the `PATH`.
 They can then directly be used from the command line.
 Otherwise, make sure that the `bin` folder of the used `pip` distribution is in the `PATH`.

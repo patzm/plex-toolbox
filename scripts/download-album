@@ -9,16 +9,16 @@ from plexapi.myplex import MyPlexAccount
 from tqdm import tqdm
 
 
-from plex_toolbox import cli
+from plex_toolbox import cli, server
 
 
 def main(config):
     password = cli.maybe_query_password(config=config)
     account = MyPlexAccount(username=config.username, password=password)
-    plex = account.resource(config.server).connect()
+    plex_server = server.get_plex_resource(server=config.server, account=account)
 
     # if no playlists/albums will select the first and only
-    playlists = [pl for pl in plex.playlists() if pl.isPhoto]
+    playlists = [pl for pl in plex_server.playlists() if pl.isPhoto]
     playlist = utils.choose("\nChoose Playlist", playlists, lambda pl: "%s" % pl.title)
 
     if not config.output_dir:
@@ -32,7 +32,7 @@ def main(config):
         photo_media_part = photo.media[0].parts[0]
         filename = os.path.basename(photo_media_part.file)
         logging.debug(f"Downloading {filename} ...")
-        url = plex.url(f"{photo_media_part.key}?download=1")
+        url = plex_server.url(f"{photo_media_part.key}?download=1")
         output_path = os.path.join(output_dir, filename)
         if os.path.exists(output_path):
             logging.debug(f"{output_path} already exists, skipping ...")

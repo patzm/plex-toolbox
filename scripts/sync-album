@@ -1,0 +1,41 @@
+#! /usr/bin/env python
+import argparse
+import logging
+
+from plexapi.library import PhotoSection
+from plexapi.myplex import MyPlexAccount
+from plexapi.utils import choose
+
+from plex_toolbox import cli, server
+
+
+def sync(config: argparse.Namespace):
+    password = cli.maybe_query_password(config=config)
+    account = MyPlexAccount(username=config.username, password=password)
+    plex_server = server.get_plex_resource(server=config.server, account=account)
+    sections = plex_server.library.sections()
+    photo_sections = [
+        section for section in sections if isinstance(section, PhotoSection)
+    ]
+
+    src_photo_section = choose(
+        "Choose a source library", photo_sections, lambda ps: ps.title
+    )
+    photo_sections.remove(src_photo_section)
+    dst_photo_section = choose(
+        "Choose a destination library", photo_sections, lambda ps: ps.title
+    )
+
+    playlist = choose(
+        "Choose a source album", src_photo_section.playlists(), lambda pl: pl.title
+    )
+    logging.info(
+        f"Syncing from {src_photo_section} to {dst_photo_section} playlist {playlist}"
+    )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser("sync-album")
+    parser = cli.add_server_args(parser)
+    args = parser.parse_args()
+    sync(config=args)

@@ -15,6 +15,7 @@ For instance, installing with `pip install --user ...` will usually install into
 
 ## Scripts
 * `download-album`
+* `sync-album`
 
 ### `download-album`
 
@@ -36,4 +37,7 @@ optional arguments:
                         in the current working directory.
 ```
 
-
+### `sync-album`
+```text
+TODO
+```

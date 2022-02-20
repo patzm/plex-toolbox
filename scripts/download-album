@@ -19,7 +19,7 @@ def main(config):
 
     # if no playlists/albums will select the first and only
     playlists = [pl for pl in plex_server.playlists() if pl.isPhoto]
-    playlist = utils.choose("\nChoose Playlist", playlists, lambda pl: "%s" % pl.title)
+    playlist = utils.choose("\nChoose Playlist", playlists, lambda pl: pl.title)
 
     if not config.output_dir:
         output_dir = os.getcwd()
